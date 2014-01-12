@@ -19,6 +19,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'south',
     'rest_framework',
 
     'times',
@@ -40,8 +41,12 @@ WSGI_APPLICATION = 'time_machine.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': 'time_machine',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'OPTIONS': {'init_command': 'SET storage_engine=INNODB'}
     }
 }
 
