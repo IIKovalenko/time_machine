@@ -3,5 +3,5 @@ from times.views import TimeEntryList
 
 urlpatterns = patterns(
     '',
-    url(r'^/api/time_entry', TimeEntryList.as_view(), name='time_entry_list'),
+    url(r'^api/time_entry', TimeEntryList.as_view(), name='time_entry_list'),
 )
