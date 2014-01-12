@@ -1,11 +1,8 @@
-from django.views.generic import FormView
-from times.forms import TimeEntryForm
+from rest_framework import generics
+from times.models import TimeEntry
+from times.serializers import TimeEntrySerializer
 
 
-class TimeEntryAddView(FormView):
-    form_class = TimeEntryForm
-
-    def get_form_kwargs(self):
-        kwargs = super(TimeEntryAddView, self).get_form_kwargs()
-        kwargs['user'] = self.request.user
-        return kwargs
+class TimeEntryList(generics.ListCreateAPIView):
+    queryset = TimeEntry.objects.all()
+    serializer_class = TimeEntrySerializer
