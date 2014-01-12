@@ -5,7 +5,7 @@ from django.db import models
 class TimeEntry(models.Model):
     user = models.ForeignKey(get_user_model(), verbose_name='Пользователь')
     action_type = models.ForeignKey('ActionType', verbose_name='Действие')
-    spent_on = models.DateField('Дата записи', auto_now_add=True)
+    spent_on = models.DateField('Дата записи')  # TODO auto_now_add
     time_spend_seconds = models.IntegerField('Потраченное время, сек', default=0)
 
     def __unicode__(self):
