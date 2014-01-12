@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+
+
+{% block content %}
+        Потраченное время:
+    <ul>
+        {% for entry in entries %}
+            <li>{{ entry }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
