@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        {% block css %}
+            <link href="{% static 'vendor/bootstrap/css/bootstrap.css' %}" rel="stylesheet">
+            <link href="{% static 'styles.css' %}" rel="stylesheet">
+        {% endblock %}
+
+
+        <title>{% block title %}Time Machine{% endblock %}</title>
+    </head>
+    <body>
+        {% block header %}
+            <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <div class="container">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="/">Time Machine</a>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+        <div class="page-content">
+            {% block content %}{% endblock %}
+        </div>
+    </body>
+</html>
