@@ -19,7 +19,8 @@ class TimeEntry(models.Model):
         time_spend_per_action = {}
         for action in actions:
             time_spend = sum([e.time_spend_seconds for e in entries if e.action_type == action])
-            time_spend_per_action[action] = {
+            time_spend_per_action[action.pk] = {
+                'color': action.color,
                 'absolute_value': time_spend,
                 'relative_value': time_spend / total_time_tracked * 100
             }
@@ -35,6 +36,7 @@ class TimeEntry(models.Model):
 
 class ActionType(models.Model):
     name = models.CharField('Название', max_length=1024)
+    color = models.CharField('Цвет на графике', max_length=7)
 
     def __str__(self):
         return self.name

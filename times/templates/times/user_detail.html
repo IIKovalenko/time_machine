@@ -2,11 +2,23 @@
 
 
 {% block content %}
-        Потраченное время:
-    <ul>
-        {% for action, time_info in statistics.actions_info.items %}
-            <li>{{ action }} - {{ time_info.absolute_value }} ({{ time_info.relative_value }})</li>
-        {% endfor %}
-    </ul>
-    Всего потрачено: {{ statistics.total_time_tracked }}
+    <canvas class="js-activity-chart" width="400" height="400"></canvas>
+    <span class="time-entry-info" data-info="{{ statistics }}"></span>
+{% endblock %}
+
+
+{% block bottom_js %}
+    {{ block.super }}
+        <script>
+            var raw_data = $('.time-entry-info').data('info'),
+                ctx = $(".js-activity-chart").get(0).getContext("2d"),
+                    data = [];
+            $.each(raw_data, function(key, value){
+                data.push({
+                    value: value['relative_value'],
+                    color: value['color']
+                })
+            });
+            new Chart(ctx).Doughnut(data, {});
+        </script>
 {% endblock %}

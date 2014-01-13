@@ -1,4 +1,5 @@
 from datetime import date
+import json
 from django.views.generic import TemplateView
 from rest_framework import generics
 from times.models import TimeEntry
@@ -16,5 +17,8 @@ class UserDetailView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(UserDetailView, self).get_context_data(**kwargs)
         user = self.request.user
-        context['statistics'] = TimeEntry.get_statistics(user, date(2014, 1, 1), date(2014, 1, 20))
+        context['statistics'] = json.dumps(
+            TimeEntry.get_statistics(user, date(2014, 1, 1), date(2014, 1, 20))['actions_info']
+        ).encode('utf-8')
+        print(context['statistics'], type(context['statistics']))
         return context
