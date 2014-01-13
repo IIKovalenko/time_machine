@@ -4,8 +4,8 @@
 {% block content %}
         Потраченное время:
     <ul>
-        {% for action, time in statistics.actions_info.items %}
-            <li>{{ action }} - {{ time }}</li>
+        {% for action, time_info in statistics.actions_info.items %}
+            <li>{{ action }} - {{ time_info.absolute_value }} ({{ time_info.relative_value }})</li>
         {% endfor %}
     </ul>
     Всего потрачено: {{ statistics.total_time_tracked }}

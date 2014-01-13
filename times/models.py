@@ -18,7 +18,11 @@ class TimeEntry(models.Model):
         total_time_tracked = sum([e.time_spend_seconds for e in entries])
         time_spend_per_action = {}
         for action in actions:
-            time_spend_per_action[action] = sum([e.time_spend_seconds for e in entries if e.action_type == action])
+            time_spend = sum([e.time_spend_seconds for e in entries if e.action_type == action])
+            time_spend_per_action[action] = {
+                'absolute_value': time_spend,
+                'relative_value': time_spend / total_time_tracked * 100
+            }
         return {
             'total_time_tracked': total_time_tracked,
             'actions_info': time_spend_per_action,
