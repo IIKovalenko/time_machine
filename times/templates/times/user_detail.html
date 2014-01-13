@@ -4,8 +4,9 @@
 {% block content %}
         Потраченное время:
     <ul>
-        {% for entry in entries %}
-            <li>{{ entry }}</li>
+        {% for action, time in statistics.actions_info.items %}
+            <li>{{ action }} - {{ time }}</li>
         {% endfor %}
     </ul>
+    Всего потрачено: {{ statistics.total_time_tracked }}
 {% endblock %}
