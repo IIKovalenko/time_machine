@@ -15,7 +15,7 @@
         <div class="add-entry-form__wrapper">
             <div class="add-entry-form__header">Add time entry</div>
 
-            <form method="POST" class="form-horizontal" action="{% url 'time_entry_list' %}">
+            <form method="POST" class="form-horizontal js-form" action="{% url 'time_entry_list' %}">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="action_type" class="col-sm-3 control-label">Action</label>
@@ -51,6 +51,11 @@
         <script src="{% static 'vendor/moment.js/moment.js' %}"></script>
         <script src="{% static 'donut_graph.js' %}"></script>
         <script>
+            $('.js-form').ajaxForm({
+                success: function(){
+                    console.log('Time entry added')  // TODO add popup here
+                }
+            });
             $('.js-get-statistics').on('click', function(){
                 var days = $(this).data('days');
                 getStatistics(days, drawDonutGraph);
