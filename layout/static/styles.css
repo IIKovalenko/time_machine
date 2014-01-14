@@ -4,6 +4,17 @@
     padding: 10px;
 }
 
-.profile__buttons {
+.profile__buttons, .add-entry-form__submit {
     text-align: center;
+}
+
+.add-entry-form__header {
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    font-size: large;
+}
+
+.add-entry-form__wrapper {
+    margin-top: 30px;
 }

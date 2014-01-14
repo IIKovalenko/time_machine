@@ -3,7 +3,7 @@ import json
 from django.http import HttpResponse
 from django.views.generic import TemplateView, View
 from rest_framework import generics
-from times.models import TimeEntry
+from times.models import TimeEntry, ActionType
 from times.serializers import TimeEntrySerializer
 from times.utils import get_datetime_from_request
 
@@ -12,9 +12,17 @@ class TimeEntryList(generics.ListCreateAPIView):
     queryset = TimeEntry.objects.all()
     serializer_class = TimeEntrySerializer
 
+    def pre_save(self, obj):
+        obj.user = self.request.user
+
 
 class UserDetailView(TemplateView):
     template_name = 'times/user_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(UserDetailView, self).get_context_data(**kwargs)
+        context['actions'] = [(a.pk, a.name) for a in ActionType.objects.all()]
+        return context
 
 
 class UserStatisticsView(View):

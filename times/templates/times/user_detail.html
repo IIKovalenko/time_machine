@@ -12,6 +12,36 @@
             <a class="btn btn-sm btn-default js-get-statistics" data-days="7" href="#" role="button">Week</a>
             <a class="btn btn-sm btn-default js-get-statistics" data-days="30" href="#" role="button">Month</a>
         </div>
+        <div class="add-entry-form__wrapper">
+            <div class="add-entry-form__header">Add time entry</div>
+
+            <form method="POST" class="form-horizontal" action="{% url 'time_entry_list' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="action_type" class="col-sm-3 control-label">Action</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" id="action_type" name="action_type">
+                            {% for action in actions %}
+                                <option
+                                    {% if forloop.first %}selected="selected" {% endif %}
+                                    value="{{ action.0 }}">
+                                        {{ action.1 }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="time_spend_seconds" class="col-sm-3 control-label">Time, min</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="time_spend_seconds" name="time_spend_seconds" placeholder="30">
+                    </div>
+                </div>
+                <div class="form-group add-entry-form__submit">
+                        <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </form>
+        </div>
     </div>
 {% endblock %}
 

@@ -6,3 +6,4 @@ from times.models import TimeEntry
 class TimeEntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = TimeEntry
+        exclude = ('user', )

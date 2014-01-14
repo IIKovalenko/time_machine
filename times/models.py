@@ -13,7 +13,7 @@ class TimeEntry(models.Model):
 
     @classmethod
     def get_statistics(cls, user, date_from, date_to):
-        entries = TimeEntry.objects.filter(user=user, spent_on__range=(date_from, date_to))
+        entries = TimeEntry.objects.filter(user=user.pk, spent_on__range=(date_from, date_to))
         actions = set([e.action_type for e in entries])
         total_time_tracked = sum([e.time_spend_seconds for e in entries])
         time_spend_per_action = {}
