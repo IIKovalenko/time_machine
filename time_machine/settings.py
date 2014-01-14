@@ -62,3 +62,5 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+
+TIME_FORMAT = "%Y-%m-%dT%H:%M:%S"

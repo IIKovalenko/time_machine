@@ -1,9 +1,11 @@
 from datetime import date
 import json
-from django.views.generic import TemplateView
+from django.http import HttpResponse
+from django.views.generic import TemplateView, View
 from rest_framework import generics
 from times.models import TimeEntry
 from times.serializers import TimeEntrySerializer
+from times.utils import get_datetime_from_request
 
 
 class TimeEntryList(generics.ListCreateAPIView):
@@ -14,11 +16,14 @@ class TimeEntryList(generics.ListCreateAPIView):
 class UserDetailView(TemplateView):
     template_name = 'times/user_detail.html'
 
-    def get_context_data(self, **kwargs):
-        context = super(UserDetailView, self).get_context_data(**kwargs)
-        user = self.request.user
-        context['statistics'] = json.dumps(
-            TimeEntry.get_statistics(user, date(2014, 1, 1), date(2014, 1, 20))['actions_info']
-        ).encode('utf-8')
-        print(context['statistics'], type(context['statistics']))
-        return context
+
+class UserStatisticsView(View):
+    def get(self, *args, **kwargs):
+        date_from = get_datetime_from_request('date_from', self.request)
+        date_to = get_datetime_from_request('date_to', self.request)
+        stat = TimeEntry.get_statistics(self.request.user, date_from, date_to)['actions_info']
+
+        return HttpResponse(
+            json.dumps(stat).encode('utf-8'),
+            content_type='application/json'
+        )
