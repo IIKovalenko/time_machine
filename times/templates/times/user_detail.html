@@ -53,7 +53,7 @@
         <script>
             $('.js-form').ajaxForm({
                 success: function(){
-                    console.log('Time entry added');  // TODO add popup here
+                    $('.js-flash-container').noty({text: 'Time entry added', type: 'success', timeout: 800});
                 }
             });
             $('.js-get-statistics').on('click', function(){

@@ -43,6 +43,7 @@
 
 
         <div class="page-content">
+            <div class="col-md-3 col-md-offset-9 js-flash-container"></div>
             {% block content %}{% endblock %}
         </div>
 
@@ -51,6 +52,7 @@
             <script src="{% static 'vendor/jquery/jquery.js' %}"></script>
             <script src="{% static 'vendor/jquery.form.js/jquery.form.js' %}"></script>
             <script src="{% static 'vendor/Chart.js/Chart.js' %}"></script>
+            <script src="{% static 'vendor/noty/packaged/jquery.noty.packaged.min.js' %}"></script>
             <script src="{% static 'timer.js' %}"></script>
         {% endblock %}
     </body>

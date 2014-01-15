@@ -2,8 +2,7 @@ var interval_id,
     start_time,
     hours = 0,
     minutes = 0,
-    seconds = 0,
-    diff = null;
+    seconds = 0;
 var tick_event = function(){
         seconds += 1;
         if(seconds > 59){
@@ -38,15 +37,19 @@ $('.js-start-count-form__resume-button').on('click', function(){
     $('.js-start-count-form__pause-button').removeClass('hidden');
 });
 $('.js-start-count-form__stop-button').on('click', function(){
+    var minutes_amount = hours * 60 + minutes,
+        $actionTypeSecect = $('.js-start-count-form__action-type-select');
     $.ajax({
         type: 'POST',
         url: '/api/time_entry',  // FIXME hardcode url
         data: {
-            action_type: $('.js-start-count-form__action-type-select').val(),
+            action_type: $actionTypeSecect.val(),
             time_spend_seconds: hours * 60 + minutes
         },
         success: function(){
-            console.log('time entry created');  // TODO popup here
+            var msg = 'Time entry "' + $('.js-start-count-form__action-type-select option:selected').text().trim() +
+                ' - ' + minutes_amount + ' min" created.';
+            $('.js-flash-container').noty({text: msg, type: 'success', timeout: 800});
         },
         beforeSend: function(xhr, settings){
             var csrftoken = getCookie('csrftoken');
@@ -54,7 +57,11 @@ $('.js-start-count-form__stop-button').on('click', function(){
         }
     });
     clearInterval(interval_id);
-    diff = null;
+    hours = 0;
+    minutes = 0;
+    seconds = 0;
+    $('.timer__value').text('');
+    $actionTypeSecect.prop('disabled', '');
     $(this).addClass('hidden');
     $('.js-start-count-form__pause-button').addClass('hidden');
     $('.js-start-count-form__resume-button').addClass('hidden');
