@@ -38,7 +38,21 @@ $('.js-start-count-form__resume-button').on('click', function(){
     $('.js-start-count-form__pause-button').removeClass('hidden');
 });
 $('.js-start-count-form__stop-button').on('click', function(){
-    console.log(diff);  // TODO send POST request and create time entry
+    $.ajax({
+        type: 'POST',
+        url: '/api/time_entry',  // FIXME hardcode url
+        data: {
+            action_type: $('.js-start-count-form__action-type-select').val(),
+            time_spend_seconds: hours * 60 + minutes
+        },
+        success: function(){
+            console.log('time entry created');  // TODO popup here
+        },
+        beforeSend: function(xhr, settings){
+            var csrftoken = getCookie('csrftoken');
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    });
     clearInterval(interval_id);
     diff = null;
     $(this).addClass('hidden');
@@ -52,4 +66,19 @@ var formatNumberLength = function(num, length) {
         r = "0" + r;
     }
     return r;
-}
+},
+    getCookie = function(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    };
