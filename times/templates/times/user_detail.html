@@ -5,42 +5,62 @@
 
 
 {% block content %}
-    <div class="col-md-4 col-md-offset-4">
-        <canvas class="js-activity-chart" width="400" height="400"></canvas>
+    <div>
+        <div class="col-md-offset-4">
+            <canvas class="js-activity-chart" width="440" height="440"></canvas>
+        </div>
         <div class="profile__buttons">
             <a class="btn btn-sm btn-default js-get-statistics" data-days="1" href="#" role="button">Day</a>
             <a class="btn btn-sm btn-default js-get-statistics" data-days="7" href="#" role="button">Week</a>
             <a class="btn btn-sm btn-default js-get-statistics" data-days="30" href="#" role="button">Month</a>
         </div>
-        <div class="add-entry-form__wrapper">
-            <div class="add-entry-form__header">Add time entry</div>
+        <div class="forms-wrapper col-md-offset-4 col-md-8">
+            <div class="add-entry-form__wrapper col-md-6">
+                <div class="add-entry-form__header">Add time entry</div>
 
-            <form method="POST" class="form-horizontal js-form" action="{% url 'time_entry_list' %}">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="action_type" class="col-sm-3 control-label">Action</label>
-                    <div class="col-sm-9">
-                        <select class="form-control" id="action_type" name="action_type">
-                            {% for action in actions %}
-                                <option
-                                    {% if forloop.first %}selected="selected" {% endif %}
-                                    value="{{ action.0 }}">
-                                        {{ action.1 }}
-                                </option>
-                            {% endfor %}
-                        </select>
+                <form method="POST" class="form-horizontal js-form" action="{% url 'time_entry_list' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-2">
+                            <select class="form-control add-entry-form__action-type-select" id="action_type" name="action_type">
+                                {% for action in actions %}
+                                    <option
+                                        {% if forloop.first %}selected="selected" {% endif %}
+                                        value="{{ action.0 }}">
+                                            {{ action.1 }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <button class="btn btn-default add-entry-form__add-action-button js-add-action-button">+</button>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="time_spend_min" class="col-sm-3 control-label">Time, min</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" id="time_spend_min" name="time_spend_min" placeholder="30">
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-2">
+                            <input type="text" class="form-control" id="time_spend_min" name="time_spend_min" placeholder="time in minutes">
+                        </div>
                     </div>
-                </div>
-                <div class="form-group add-entry-form__submit">
-                        <button type="submit" class="btn btn-primary">Add</button>
-                </div>
-            </form>
+                    <div class="form-group add-entry-form__submit">
+                            <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
+
+
+            <div class="add-action-type-form__wrapper col-md-6 hidden">
+                <div class="add-entry-form__header">Add action type</div>
+
+                <form method="POST" class="form-horizontal js-form" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-2">
+                            <input type="text" class="form-control" id="name" name="time_spend_min" placeholder="name">
+                        </div>
+                    </div>
+                    <div class="form-group add-entry-form__submit">
+                            <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 {% endblock %}
@@ -51,6 +71,9 @@
         <script src="{% static 'vendor/moment.js/moment.js' %}"></script>
         <script src="{% static 'donut_graph.js' %}"></script>
         <script>
+            $('.js-add-action-button').on('click', function(){
+                $('.add-action-type-form__wrapper').toggleClass('hidden');
+            });
             $('.js-form').ajaxForm({
                 success: function(){
                     $('.js-flash-container').noty({text: 'Time entry added', type: 'success', timeout: 800});

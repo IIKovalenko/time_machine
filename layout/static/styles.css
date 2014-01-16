@@ -15,8 +15,17 @@
     font-size: large;
 }
 
-.add-entry-form__wrapper {
+.add-entry-form__wrapper, .add-action-type-form__wrapper {
     margin-top: 30px;
+}
+
+.add-entry-form__action-type-select {
+    display: inline-block;
+    width: 85% !important;
+}
+
+.add-entry-form__add-action-button {
+    float: right;
 }
 
 .start-count-form__wrapper {
