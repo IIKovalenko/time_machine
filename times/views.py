@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView, View
 from rest_framework import generics
 from times.models import TimeEntry, ActionType
-from times.serializers import TimeEntrySerializer
+from times.serializers import TimeEntrySerializer, ActionTypeSerializer
 from times.utils import get_datetime_from_request
 
 
@@ -13,6 +13,14 @@ class TimeEntryList(generics.ListCreateAPIView):
 
     def pre_save(self, obj):
         obj.user = self.request.user
+
+
+class ActionTypeList(generics.ListCreateAPIView):
+    queryset = ActionType.objects.all()
+    serializer_class = ActionTypeSerializer
+
+    def pre_save(self, obj):
+        obj.color = '#F7464A'  # TODO generate colors from beautiful palete
 
 
 class UserDetailView(TemplateView):

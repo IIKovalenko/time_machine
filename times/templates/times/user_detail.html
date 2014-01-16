@@ -49,11 +49,11 @@
             <div class="add-action-type-form__wrapper col-md-6 hidden">
                 <div class="add-entry-form__header">Add action type</div>
 
-                <form method="POST" class="form-horizontal js-form" action="">
+                <form method="POST" class="form-horizontal js-form" action="{% url 'action_type_list' %}">
                     {% csrf_token %}
                     <div class="form-group">
                         <div class="col-sm-9 col-sm-offset-2">
-                            <input type="text" class="form-control" id="name" name="time_spend_min" placeholder="name">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="name">
                         </div>
                     </div>
                     <div class="form-group add-entry-form__submit">
