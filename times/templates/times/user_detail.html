@@ -72,6 +72,13 @@
         <script src="{% static 'donut_graph.js' %}"></script>
         <script>
             $('.js-add-action-button').on('click', function(){
+                var $this = $(this);
+                if($this.text() == '+') {
+                    $this.text('-');
+                }
+                else {
+                    $this.text('+');
+                }
                 $('.add-action-type-form__wrapper').toggleClass('hidden');
             });
             $('.js-form').ajaxForm({
