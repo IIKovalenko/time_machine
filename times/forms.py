@@ -5,11 +5,11 @@ from times.models import TimeEntry
 class TimeEntryForm(forms.ModelForm):
     class Meta:
         model = TimeEntry
-        fields = ['action_type', 'spent_on', 'time_spend_seconds']
+        fields = ['action_type', 'spent_on', 'time_spend_min']
 
     def __init__(self, *args, **kwargs):
         if 'user' not in kwargs:
-            raise AttributeError('Не указан пользователь при создании TimeEntryForm')
+            raise AttributeError('User not specified')
         self.user = kwargs.pop('user')
         super(TimeEntryForm, self).__init__(*args, **kwargs)
 

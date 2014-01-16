@@ -44,7 +44,7 @@ $('.js-start-count-form__stop-button').on('click', function(){
         url: '/api/time_entry',  // FIXME hardcode url
         data: {
             action_type: $actionTypeSecect.val(),
-            time_spend_seconds: hours * 60 + minutes
+            time_spend_min: hours * 60 + minutes
         },
         success: function(){
             var msg = 'Time entry "' + $('.js-start-count-form__action-type-select option:selected').text().trim() +

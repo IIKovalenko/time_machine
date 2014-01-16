@@ -1,4 +1,3 @@
-from datetime import date
 import json
 from django.http import HttpResponse
 from django.views.generic import TemplateView, View
