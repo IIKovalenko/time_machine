@@ -2,3 +2,4 @@ Django==1.6.1
 djangorestframework==2.3.10
 -e git+https://github.com/clelland/MySQL-for-Python-3.git#egg=MySQL-for-Python-3
 South==0.8.4
+factory-boy==2.3.0

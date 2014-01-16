@@ -28,9 +28,13 @@ class UserStatisticsView(View):
     def get(self, *args, **kwargs):
         date_from = get_datetime_from_request('date_from', self.request)
         date_to = get_datetime_from_request('date_to', self.request)
+        if not (date_from and date_to):
+            return self.json_response({'errors': ['Specify date_from and date_to GET params.']})
         stat = TimeEntry.get_statistics(self.request.user, date_from, date_to)['actions_info']
+        return self.json_response(stat)
 
+    def json_response(self, data):
         return HttpResponse(
-            json.dumps(stat).encode('utf-8'),
+            json.dumps(data).encode('utf-8'),
             content_type='application/json'
         )
