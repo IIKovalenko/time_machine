@@ -64,3 +64,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 TIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
+
+LOGIN_URL = '/'
+LOGIN_REDIRECT_URL = '/profile/'

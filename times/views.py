@@ -1,10 +1,19 @@
 import json
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, View
 from rest_framework import generics
 from times.models import TimeEntry, ActionType
 from times.serializers import TimeEntrySerializer, ActionTypeSerializer
 from times.utils import get_datetime_from_request
+
+
+class LoginRequiredMixin(object):
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(LoginRequiredMixin, self).dispatch(*args, **kwargs)
 
 
 class TimeEntryList(generics.ListCreateAPIView):
@@ -23,7 +32,7 @@ class ActionTypeList(generics.ListCreateAPIView):
         obj.color = '#F7464A'  # TODO generate colors from beautiful palete
 
 
-class UserDetailView(TemplateView):
+class UserDetailView(LoginRequiredMixin, TemplateView):
     template_name = 'times/user_detail.html'
 
     def get_context_data(self, **kwargs):
