@@ -50,6 +50,7 @@ $('.js-start-count-form__stop-button').on('click', function(){
             var msg = 'Time entry "' + $('.js-start-count-form__action-type-select option:selected').text().trim() +
                 ' - ' + minutes_amount + ' min" created.';
             $('.js-flash-container').noty({text: msg, type: 'success', timeout: 800});
+            getStatistics($('.js-activity-chart').data('currentDays'), drawDonutGraph);
         },
         beforeSend: function(xhr, settings){
             var csrftoken = getCookie('csrftoken');

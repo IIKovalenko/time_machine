@@ -1,5 +1,6 @@
 var getStatistics = function(daysFromNow, onSuccess){
     var now, dateFrom, dateTo;
+    $('.js-activity-chart').data('currentDays', daysFromNow);
     now = new Date();
     dateTo = moment(now).format('YYYY-MM-DDTHH:m:s');
     dateFrom = moment(new Date(now - daysFromNow * 24 * 60 * 60 * 1000)).format('YYYY-MM-DDTHH:m:s');
