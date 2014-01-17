@@ -6,10 +6,20 @@
 
 {% block content %}
     <div>
-        <div class="col-md-offset-4">
+        <div class="col-md-offset-4 col-md-4">
             <canvas class="js-activity-chart" width="440" height="440"></canvas>
         </div>
-        <div class="profile__buttons">
+        <div class="col-md-4">
+            <table class="table table-condensed table-bordered legend">
+                {% for action_info in actions %}
+                    <tr>
+                        <td>{{ action_info.1 }}</td>
+                        <td style="background-color: {{ action_info.2 }}"></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-md-12 profile__buttons">
             <a class="btn btn-sm btn-default js-get-statistics" data-days="1" href="#" role="button">Day</a>
             <a class="btn btn-sm btn-default js-get-statistics" data-days="7" href="#" role="button">Week</a>
             <a class="btn btn-sm btn-default js-get-statistics" data-days="30" href="#" role="button">Month</a>

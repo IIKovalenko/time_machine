@@ -37,7 +37,7 @@ class UserDetailView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(UserDetailView, self).get_context_data(**kwargs)
-        context['actions'] = [(a.pk, a.name) for a in ActionType.objects.all()]
+        context['actions'] = [(a.pk, a.name, a.color) for a in ActionType.objects.all()]
         return context
 
 

@@ -43,3 +43,8 @@
 .hidden {
     display: none;
 }
+
+.legend {
+    width: 50%;
+    float: right;
+}
