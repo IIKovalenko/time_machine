@@ -41,7 +41,7 @@ class UserDetailView(LoginRequiredMixin, TemplateView):
         return context
 
 
-class UserStatisticsView(View):
+class UserStatisticsView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
         date_from = get_datetime_from_request('date_from', self.request)
         date_to = get_datetime_from_request('date_to', self.request)
