@@ -17,26 +17,28 @@
                     <div class="navbar-header">
                         <a class="navbar-brand" href="/">Time Machine</a>
                     </div>
-                    <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="form-inline start-count-form__wrapper">
-                                <select class="js-start-count-form__action-type-select form-control" id="action_type" name="action_type">
-                                    {% for action in actions %}
-                                        <option
-                                            {% if forloop.first %}selected="selected" {% endif %}
-                                            value="{{ action.0 }}">
-                                                {{ action.1 }}
-                                        </option>
-                                    {% endfor %}
-                                </select>
-                                <button type="submit" class="btn btn-success js-start-count-form__start-button">Start</button>
-                                <button type="submit" class="btn btn-primary js-start-count-form__pause-button hidden">Pause</button>
-                                <button type="submit" class="btn btn-warning js-start-count-form__resume-button hidden">Resume</button>
-                                <button type="submit" class="btn btn-danger js-start-count-form__stop-button hidden">Stop</button>
-                                <div class="timer__value"></div>
-                            </li>
-                         </ul>
-                    </nav>
+                    {% block timer %}
+                        <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="form-inline start-count-form__wrapper">
+                                    <select class="js-start-count-form__action-type-select form-control" id="action_type" name="action_type">
+                                        {% for action in actions %}
+                                            <option
+                                                {% if forloop.first %}selected="selected" {% endif %}
+                                                value="{{ action.0 }}">
+                                                    {{ action.1 }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" class="btn btn-success js-start-count-form__start-button">Start</button>
+                                    <button type="submit" class="btn btn-primary js-start-count-form__pause-button hidden">Pause</button>
+                                    <button type="submit" class="btn btn-warning js-start-count-form__resume-button hidden">Resume</button>
+                                    <button type="submit" class="btn btn-danger js-start-count-form__stop-button hidden">Stop</button>
+                                    <div class="timer__value"></div>
+                                </li>
+                             </ul>
+                        </nav>
+                    {% endblock %}
                 </div>
             </div>
         {% endblock %}
