@@ -61,3 +61,7 @@
 .index-login-form-wrapper {
     margin-top: 30px;
 }
+
+.flash-container {
+    position: absolute;
+}
