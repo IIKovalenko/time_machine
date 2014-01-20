@@ -1,10 +1,12 @@
 from datetime import date
 import json
+
 from urllib.parse import urlencode
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
 from . import factories
+from times.models import TimeEntry, ActionType
 
 
 class TimeEntryTestCase(TestCase):
@@ -28,13 +30,24 @@ class TimeEntryTestCase(TestCase):
     def get_decoded_response(self, url_name, params):
         url = self.get_url(url_name, params)
         raw_response = self.client.get(url)
+        return self._decode_response(raw_response)
+
+    def make_post_request(self, url_name, data):
+        url = reverse(url_name)
+        raw_response = self.client.post(url, data=data)
+        return self._decode_response(raw_response)
+
+    def _decode_response(self, raw_response):
         return json.loads(raw_response.content.decode('utf-8'))
 
 
-class StatisticsTestCase(TimeEntryTestCase):
+class LoggedInTestCase(TimeEntryTestCase):
     def setUp(self):
-        super(StatisticsTestCase, self).setUp()
+        super(LoggedInTestCase, self).setUp()
         self.client.login(username=self.user.username, password='123456')
+
+
+class APITestCase(LoggedInTestCase):
 
     def test_shows_statistics(self):
         response = self.get_decoded_response('user_statistics_view', {
@@ -64,3 +77,33 @@ class StatisticsTestCase(TimeEntryTestCase):
     def test_not_fails_if_no_dates(self):
         response = self.get_decoded_response('user_statistics_view', {})
         self.assertEqual(response, {'errors': ['Specify date_from and date_to GET params.']})
+
+    def test_can_create_entries(self):
+        spent_time = 13
+        response = self.make_post_request('time_entry_list', {
+            'action_type': self.action_types[0].pk,
+            'time_spend_min': spent_time,
+        })
+        self.assertTrue('id' in response)
+        new_entry = TimeEntry.objects.filter(pk=response['id'])  # TODO get_object_or_None
+        self.assertTrue(new_entry)
+        self.assertEqual(new_entry[0].time_spend_min, spent_time)
+        self.assertEqual(new_entry[0].user, self.user)
+
+    def test_can_create_action_type(self):
+        action_type_name = 'feeding dragon'
+        response = self.make_post_request('action_type_list', {
+            'name': action_type_name
+        })
+        self.assertTrue('id' in response)
+        new_type = ActionType.objects.filter(pk=response['id'])
+        self.assertTrue(new_type)
+        self.assertEqual(new_type[0].name, action_type_name)
+        self.assertTrue(new_type[0].color)
+
+
+class ProfileTestCase(LoggedInTestCase):
+    def test_profile_has_Actions_in_context(self):
+        response = self.client.get(reverse('profile'))
+        self.assertTrue('actions' in response.context)
+        self.assertEqual(len(response.context['actions']), ActionType.objects.all().count())

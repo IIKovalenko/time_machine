@@ -39,3 +39,6 @@ develop-eggs
 
 # Translations
 *.mo
+
+
+htmlcov/
