@@ -33,6 +33,10 @@ class TimeEntry(models.Model):
 class ActionType(models.Model):
     name = models.CharField(max_length=1024)
     color = models.CharField(max_length=7)
+    weight = models.SmallIntegerField(default=100)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ('weight', )
