@@ -7,7 +7,13 @@
 
     <div class="jumbotron index-jumbo">
         {% with username=user.username %}
-            <h1>Hi, {{ username|default:"visiter" }}!</h1>
+            <h1>Hi,
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}">{{ user.username }}</a>
+                {% else %}
+                    visiter
+                {% endif %}!
+            </h1>
         {% endwith %}
         <p class="lead">
             Time machine is service for tracking activities and statistics analysis.
