@@ -1,5 +1,6 @@
 import json
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, View
@@ -30,6 +31,12 @@ class ActionTypeList(generics.ListCreateAPIView):
 
     def pre_save(self, obj):
         obj.color = '#F7464A'  # TODO generate colors from beautiful palete
+
+    def get_queryset(self):
+        queryset = super(ActionTypeList, self).get_queryset()
+        return queryset.filter(
+            Q(user__isnull=True) | Q(user=self.request.user)
+        )
 
 
 class UserDetailView(LoginRequiredMixin, TemplateView):

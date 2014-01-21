@@ -13,8 +13,8 @@ class TimeEntryTestCase(TestCase):
     def setUp(self):
         self.user = factories.UserFactory()
         self.action_types = [
-            factories.ActionTypeFactory(),
-            factories.ActionTypeFactory(name='Project 2', color='#F7464A'),
+            factories.ActionTypeFactory(user=self.user),
+            factories.ActionTypeFactory(user=self.user, name='Project 2', color='#F7464A'),
         ]
         self.time_entries = [
             factories.TimeEntryFactory(user=self.user, action_type=self.action_types[0]),
@@ -27,7 +27,8 @@ class TimeEntryTestCase(TestCase):
     def get_url(self, url_name, params):
         return '%s?%s' % (reverse(url_name), urlencode(params))
 
-    def get_decoded_response(self, url_name, params):
+    def get_decoded_response(self, url_name, params=None):
+        params = params or {}
         url = self.get_url(url_name, params)
         raw_response = self.client.get(url)
         return self._decode_response(raw_response)
@@ -100,6 +101,17 @@ class APITestCase(LoggedInTestCase):
         self.assertTrue(new_type)
         self.assertEqual(new_type[0].name, action_type_name)
         self.assertTrue(new_type[0].color)
+
+    def test_actions_list_not_shows_other_users_actions(self):
+        user2 = factories.UserFactory()
+        wrong_action_type = factories.ActionTypeFactory(user=user2)
+        action_types = self.get_decoded_response('action_type_list')
+        self.assertFalse(wrong_action_type.pk in [t['id'] for t in action_types])
+
+    def test_actions_list_shows_common_actions(self):
+        common_action = factories.ActionTypeFactory(user=None)
+        action_types = self.get_decoded_response('action_type_list')
+        self.assertTrue(common_action.pk in [t['id'] for t in action_types])
 
 
 class ProfileTestCase(LoggedInTestCase):

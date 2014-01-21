@@ -9,7 +9,7 @@ from . import models
 class UserFactory(factory.DjangoModelFactory):
     FACTORY_FOR = get_user_model()
 
-    username = 'dummy_user'
+    username = factory.Sequence(lambda a: 'dummy_user_%s' % a)
     password = factory.Sequence(lambda a: make_password('123456'))
     email = 'dummy@user.com'
     is_staff = True
@@ -22,6 +22,7 @@ class ActionTypeFactory(factory.DjangoModelFactory):
 
     name = 'Project 1'
     color = '#E2EAE9'
+    user = factory.SubFactory(UserFactory)
 
 
 class TimeEntryFactory(factory.DjangoModelFactory):

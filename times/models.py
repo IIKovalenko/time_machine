@@ -34,6 +34,7 @@ class ActionType(models.Model):
     name = models.CharField(max_length=1024)
     color = models.CharField(max_length=7)
     weight = models.SmallIntegerField(default=100)
+    user = models.ForeignKey(get_user_model(), null=True, blank=True)
 
     def __str__(self):
         return self.name
