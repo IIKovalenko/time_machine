@@ -7,7 +7,6 @@ var getStatistics = function(daysFromNow, onSuccess){
     $.ajax(
         '/api/profile/statistics?date_from=' + dateFrom + '&date_to=' + dateTo
     ).success(function(data){
-        console.log(daysFromNow, dateFrom, dateTo, data);
         onSuccess(data);
     });
 
