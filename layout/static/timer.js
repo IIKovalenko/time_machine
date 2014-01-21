@@ -1,21 +1,12 @@
 var interval_id,
     start_time,
-    hours = 0,
-    minutes = 0,
-    seconds = 0;
+    time_passed_sec = 0;
 var tick_event = function(){
-        seconds += 1;
-        if(seconds > 59){
-            seconds = 0;
-            minutes += 1;
-        }
-        if(minutes > 59){
-            minutes = 0;
-            hours += 1;
-        }
-
+        time_passed_sec += 1;
         $('.timer__value').text(
-            formatNumberLength(hours, 2) + ':' + formatNumberLength(minutes, 2) + ':' + formatNumberLength(seconds, 2)
+            getFormattedValue(time_passed_sec, 'h') + ':'
+            + getFormattedValue(time_passed_sec, 'm') + ':'
+            + getFormattedValue(time_passed_sec, 's')
         );
 };
 $('.js-start-count-form__start-button').on('click', function(){
@@ -37,14 +28,14 @@ $('.js-start-count-form__resume-button').on('click', function(){
     $('.js-start-count-form__pause-button').removeClass('hidden');
 });
 $('.js-start-count-form__stop-button').on('click', function(){
-    var minutes_amount = hours * 60 + minutes,
-        $actionTypeSecect = $('.js-start-count-form__action-type-select');
+    var minutes_amount = time_passed_sec % 60,
+        $actionTypeSelect = $('.js-start-count-form__action-type-select');
     $.ajax({
         type: 'POST',
         url: '/api/time_entry',  // FIXME hardcode url
         data: {
-            action_type: $actionTypeSecect.val(),
-            time_spend_min: hours * 60 + minutes
+            action_type: $actionTypeSelect.val(),
+            time_spend_min: minutes_amount
         },
         success: function(){
             var msg = 'Time entry "' + $('.js-start-count-form__action-type-select option:selected').text().trim() +
@@ -58,11 +49,9 @@ $('.js-start-count-form__stop-button').on('click', function(){
         }
     });
     clearInterval(interval_id);
-    hours = 0;
-    minutes = 0;
-    seconds = 0;
+    time_passed_sec = 0;
     $('.timer__value').text('');
-    $actionTypeSecect.prop('disabled', '');
+    $actionTypeSelect.prop('disabled', '');
     $(this).addClass('hidden');
     $('.js-start-count-form__pause-button').addClass('hidden');
     $('.js-start-count-form__resume-button').addClass('hidden');
@@ -89,4 +78,21 @@ var formatNumberLength = function(num, length) {
             }
         }
         return cookieValue;
-    };
+    },
+    getFormattedValue = function(rawValue, valueId) {
+        var value = null;
+        if (valueId == 'h') {
+            value = rawValue / 3600;
+        }
+        else if (valueId == 's') {
+            value = rawValue % 60;
+        }
+        else if (valueId == 'm') {
+            value = (rawValue % 3600) / 60;
+        }
+
+        return formatNumberLength(
+            Math.floor(value),
+            2
+        );
+};
