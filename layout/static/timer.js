@@ -28,7 +28,7 @@ $('.js-start-count-form__resume-button').on('click', function(){
     $('.js-start-count-form__pause-button').removeClass('hidden');
 });
 $('.js-start-count-form__stop-button').on('click', function(){
-    var minutes_amount = time_passed_sec % 60,
+    var minutes_amount = Math.floor((time_passed_sec % 3600) / 60),
         $actionTypeSelect = $('.js-start-count-form__action-type-select');
     $.ajax({
         type: 'POST',
