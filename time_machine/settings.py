@@ -21,6 +21,7 @@ class BaseSettings(Configuration):
 
         'south',
         'rest_framework',
+        'debug_toolbar',
 
         'layout',
         'times',
