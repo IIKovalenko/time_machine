@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, View
 from rest_framework import generics
+from times.color_generator import get_color
 from times.models import TimeEntry, ActionType
 from times.serializers import TimeEntrySerializer, ActionTypeSerializer
 from times.utils import get_datetime_from_request
@@ -30,7 +31,7 @@ class ActionTypeList(generics.ListCreateAPIView):
     serializer_class = ActionTypeSerializer
 
     def pre_save(self, obj):
-        obj.color = '#F7464A'  # TODO generate colors from beautiful palete
+        obj.color = get_color()
 
     def get_queryset(self):
         queryset = super(ActionTypeList, self).get_queryset()
