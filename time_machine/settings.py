@@ -25,6 +25,7 @@ class BaseSettings(Configuration):
 
         'layout',
         'times',
+        'targets',
     )
 
     MIDDLEWARE_CLASSES = (
