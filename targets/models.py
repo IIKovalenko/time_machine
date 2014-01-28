@@ -3,7 +3,6 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.timezone import now
 import operator
-from times.models import TimeEntry
 
 
 class TimeTarget(models.Model):
@@ -19,7 +18,7 @@ class TimeTarget(models.Model):
     period = models.IntegerField(help_text='Time target period, hours')
     target_action = models.ForeignKey('times.ActionType')
     time_bound = models.IntegerField(help_text='Time bound, minutes')
-    boundary_type = models.CharField(max_length=2, choices=BOUNDARY_TYPES)
+    boundary_type = models.CharField(max_length=2, choices=BOUNDARY_TYPES, default='gt')
     description = models.CharField(max_length=2000, null=True, blank=True)
 
     def __str__(self):
@@ -31,6 +30,8 @@ class TimeTarget(models.Model):
         )
 
     def calculate_status(self):
+        from times.models import TimeEntry
+
         date_to = now()
         date_from = date_to - timedelta(hours=self.period)
         statistics = TimeEntry.get_statistics(self.user, date_from, date_to)

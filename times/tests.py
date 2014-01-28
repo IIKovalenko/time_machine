@@ -17,8 +17,8 @@ class TimeEntryTestCase(TestCase):
             factories.ActionTypeFactory(user=self.user, name='Project 2', color='#F7464A'),
         ]
         self.time_entries = [
-            factories.TimeEntryFactory(user=self.user, action_type=self.action_types[0]),
-            factories.TimeEntryFactory(user=self.user, action_type=self.action_types[1]),
+            factories.TimeEntryFactory(user=self.user, action_type=self.action_types[0], time_spend_min=60),
+            factories.TimeEntryFactory(user=self.user, action_type=self.action_types[1], time_spend_min=60),
         ]
         for entry in self.time_entries:
             entry.spent_on = date(2013, 1, 1)
@@ -41,11 +41,14 @@ class TimeEntryTestCase(TestCase):
     def _decode_response(self, raw_response):
         return json.loads(raw_response.content.decode('utf-8'))
 
+    def login(self):
+        self.client.login(username=self.user.username, password='123456')
+
 
 class LoggedInTestCase(TimeEntryTestCase):
     def setUp(self):
         super(LoggedInTestCase, self).setUp()
-        self.client.login(username=self.user.username, password='123456')
+        self.login()
 
 
 class APITestCase(LoggedInTestCase):
