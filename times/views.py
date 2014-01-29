@@ -5,6 +5,8 @@ from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, View
 from rest_framework import generics
+from targets.models import TimeTarget
+from targets.serializers import TimeTargetSerializer
 from times.color_generator import get_color
 from times.models import TimeEntry, ActionType
 from times.serializers import TimeEntrySerializer, ActionTypeSerializer
@@ -46,6 +48,7 @@ class UserDetailView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(UserDetailView, self).get_context_data(**kwargs)
         context['actions'] = [(a.pk, a.name, a.color) for a in ActionType.objects.all()]
+        context['targets'] = TimeTargetSerializer(TimeTarget.objects.filter(user=self.request.user)).data
         return context
 
 

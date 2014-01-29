@@ -6,7 +6,19 @@
 
 {% block content %}
     <div>
-        <div class="col-md-offset-4 col-md-4">
+        <div class="col-md-3">
+            <table class="table table-condensed table-bordered legend">
+                {% for target in targets %}
+                    <tr>
+                        <td>{{ target.description }}</td>
+                        <td style="background-color: {% if target.status %} green {% else %} red {% endif %}"></td>
+
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="col-md-offset-1 col-md-4">
             <canvas class="js-activity-chart" width="440" height="440"></canvas>
         </div>
         <div class="col-md-4">
